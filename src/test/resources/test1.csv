@@ -1,0 +1,12 @@
+a,b,c
+foo,bar,baz
+foo,baz,bar
+bar,foo,baz
+
+foo,,
+bar
+,,baz
+bar,baz,foo
+baz,foo,bar
+baz,bar,foo
+foo  ,bar  ,baz  
