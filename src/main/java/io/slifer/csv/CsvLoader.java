@@ -120,7 +120,7 @@ public class CsvLoader {
             throw new IllegalArgumentException("Error while loading file [" + fileName + "].");
         }
         
-        return new CsvFile(header, rows);
+        return new CsvFile(rows);
     }
     
     private static String[] cleanRowValues(String[] row) {
