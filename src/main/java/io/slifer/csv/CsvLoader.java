@@ -65,31 +65,6 @@ public class CsvLoader {
         return importCsvData(fileName, false);
     }
     
-    // private static CsvFile importCsvData(String fileName, boolean preserveSpaces) {
-    //     String[] header;
-    //     List<String[]> rows = new ArrayList<>();
-    //    
-    //     try {
-    //         InputStream inputStream = CsvFile.class.getClassLoader().getResourceAsStream(fileName);
-    //         CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));
-    //         List<String[]> csv = csvReader.readAll();
-    //        
-    //         header = cleanRowValues(csv.get(0));
-    //         for (int i = 1; i < csv.size(); i++) {
-    //             if (csv.get(i).length != 1) {
-    //                 String[] row = (preserveSpaces) ? csv.get(i) : cleanRowValues(csv.get(i));
-    //                 rows.add(row);
-    //             }
-    //         }
-    //         csvReader.close();
-    //     }
-    //     catch (Exception e) {
-    //         throw new IllegalArgumentException("Error while loading file [" + fileName + "].");
-    //     }
-    //    
-    //     return new CsvFile(header, rows);
-    // }
-    
     private static CsvFile importCsvData(String fileName, boolean preserveSpaces) {
         List<String> header;
         List<CsvRow> rows = new ArrayList<>();
