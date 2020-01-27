@@ -172,7 +172,7 @@ public class CsvFile {
      *
      * @return A self reference.
      */
-    public CsvFile setNextRow() {
+    public CsvFile nextRow() {
         // checkRowBoundaries(currentRow + 1);
         currentRowIndex++;
         currentRow = rows.get(currentRowIndex);
@@ -185,7 +185,7 @@ public class CsvFile {
      *
      * @return A self reference.
      */
-    public CsvFile setPreviousRow() {
+    public CsvFile previousRow() {
         // checkRowBoundaries(currentRow - 1);
         currentRowIndex--;
         currentRow = rows.get(currentRowIndex);
