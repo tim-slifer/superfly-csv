@@ -104,11 +104,7 @@ public class CsvFile {
      * @return The value of the CSV segment.
      */
     public String valueOf(String column) {
-        // int columnIndex = getColumnIndex(column);
-        // currentRowIndex = rows.get(currentRowIndex);
-        
         return currentRow.valueOf(column);
-        // return currentRowIndex[columnIndex];
     }
     
     /**
@@ -119,13 +115,7 @@ public class CsvFile {
      * @return A list of CSV values from the specified column.
      */
     public List<String> columnValues(String column) {
-        // int index = getColumnIndex(column);
         List<String> columnValues = new ArrayList<>();
-        // for (String[] row : rows) {
-        //     columnValues.add(row[index]);
-        // }
-        //
-        // return columnValues;
         for (CsvRow row : rows) {
             columnValues.add(row.valueOf(column));
         }
@@ -160,7 +150,6 @@ public class CsvFile {
      * @return A self reference.
      */
     public void setCurrentRow(int row) {
-        // checkRowBoundaries(row + 1);
         this.currentRowIndex = row;
         currentRow = rows.get(currentRowIndex);
     }
@@ -171,7 +160,6 @@ public class CsvFile {
      * @return A self reference.
      */
     public void nextRow() {
-        // checkRowBoundaries(currentRow + 1);
         currentRowIndex++;
         currentRow = rows.get(currentRowIndex);
     }
@@ -182,7 +170,6 @@ public class CsvFile {
      * @return A self reference.
      */
     public void previousRow() {
-        // checkRowBoundaries(currentRow - 1);
         currentRowIndex--;
         currentRow = rows.get(currentRowIndex);
     }
@@ -194,15 +181,6 @@ public class CsvFile {
     public List<CsvRow> getRows() {
         return rows;
     }
-    
-    // /**
-    //  * Indicates whether or not another row exists below the current row.
-    //  *
-    //  * @return True if a row exists, false otherwise.
-    //  */
-    // public boolean hasNextRow() {
-    //     return (currentRow < rows.size() - 1);
-    // }
     
     private void doFilter(String column, String filterBy) {
         List<CsvRow> filteredRows = new ArrayList<>();
@@ -225,23 +203,4 @@ public class CsvFile {
         rows = excludedRows;
         currentRowIndex = 0;
     }
-    
-    // private void checkRowBoundaries(int row) {
-    //     // if (row > (rows.size() - 1)) {
-    //     if (row > rows.size()) {
-    //         throw new IndexOutOfBoundsException("New row index [" + row + "] exceeds the bounds of the CSV file.");
-    //     }
-    //     if (row < 0) {
-    //         throw new IndexOutOfBoundsException("New index cannot be less than zero.");
-    //     }
-    // }
-    
-    // private int getColumnIndex(String column) {
-    //     for (int i = 0; i < header.length; i++) {
-    //         if (header[i].equalsIgnoreCase(column)) {
-    //             return i;
-    //         }
-    //     }
-    //     throw new IllegalArgumentException("The column [" + column + "] does not exist.");
-    // }
 }

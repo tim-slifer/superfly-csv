@@ -169,24 +169,6 @@ public class CsvFileTest {
         csv.setCurrentRow(9);
     }
     
-    // @Test
-    // public void testHasNextRowWithNext() {
-    //     CsvFile csv = CsvLoader.load(TEST_FILE, false);
-    //     csv.filter(FOO);
-    //     csv.setCurrentRow(2);
-    //    
-    //     Assert.assertTrue(csv.hasNextRow());
-    // }
-    //
-    // @Test
-    // public void testHasNextRowWithoutNext() {
-    //     CsvFile csv = CsvLoader.load(TEST_FILE, false);
-    //     csv.filter(FOO);
-    //     csv.setCurrentRow(3);
-    //    
-    //     Assert.assertFalse(csv.hasNextRow());
-    // }
-    
     @Test
     public void testIgnoreInvalidRows() {
         CsvFile csv = CsvLoader.load(TEST_FILE);
