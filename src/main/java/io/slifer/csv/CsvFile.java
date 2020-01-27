@@ -197,6 +197,10 @@ public class CsvFile {
         return rows.size();
     }
     
+    public List<CsvRow> getRows() {
+        return rows;
+    }
+    
     // /**
     //  * Indicates whether or not another row exists below the current row.
     //  *
