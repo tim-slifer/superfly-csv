@@ -114,7 +114,7 @@ public class CsvFileTest {
     @Test
     public void tesSetNextRow() {
         CsvFile csv = CsvLoader.load(TEST_FILE);
-        csv.setNextRow();
+        csv.nextRow();
         
         String[] expected = {FOO, BAZ, BAR};
         
