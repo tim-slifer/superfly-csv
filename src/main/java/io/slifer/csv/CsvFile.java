@@ -159,13 +159,13 @@ public class CsvFile {
      *
      * @return A self reference.
      */
-    // public CsvFile setCurrentRow(int row) {
-    //     // checkRowBoundaries(row + 1);
-    //     this.currentRowIndex = row;
-    //     currentRowIndex = rows.get(currentRowIndex);
-    //    
-    //     return this;
-    // }
+    public CsvFile setCurrentRow(int row) {
+        // checkRowBoundaries(row + 1);
+        this.currentRowIndex = row;
+        currentRow = rows.get(currentRowIndex);
+        
+        return this;
+    }
     
     /**
      * Updates focus to the next row beneath the current row.
