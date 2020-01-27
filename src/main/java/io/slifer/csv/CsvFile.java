@@ -159,12 +159,10 @@ public class CsvFile {
      *
      * @return A self reference.
      */
-    public CsvFile setCurrentRow(int row) {
+    public void setCurrentRow(int row) {
         // checkRowBoundaries(row + 1);
         this.currentRowIndex = row;
         currentRow = rows.get(currentRowIndex);
-        
-        return this;
     }
     
     /**
@@ -172,12 +170,10 @@ public class CsvFile {
      *
      * @return A self reference.
      */
-    public CsvFile nextRow() {
+    public void nextRow() {
         // checkRowBoundaries(currentRow + 1);
         currentRowIndex++;
         currentRow = rows.get(currentRowIndex);
-        
-        return this;
     }
     
     /**
@@ -185,12 +181,10 @@ public class CsvFile {
      *
      * @return A self reference.
      */
-    public CsvFile previousRow() {
+    public void previousRow() {
         // checkRowBoundaries(currentRow - 1);
         currentRowIndex--;
         currentRow = rows.get(currentRowIndex);
-        
-        return this;
     }
     
     public int length() {
