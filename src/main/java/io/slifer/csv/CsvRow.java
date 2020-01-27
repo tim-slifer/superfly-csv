@@ -11,6 +11,19 @@ public class CsvRow {
     }
     
     public String valueOf(String column) {
-        return row.get(column);
+        if (row.containsKey(column)) {
+            return row.get(column);
+        }
+        else {
+            throw new IllegalArgumentException("The column [" + column + "] does not exist.");
+        }
+    }
+    
+    public String firstKey() {
+        return row.keySet().toArray(new String[row.size()])[0];
+    }
+    
+    public String[] values() {
+        return row.values().toArray(new String[row.size()]);
     }
 }
