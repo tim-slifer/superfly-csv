@@ -24,11 +24,13 @@ package io.slifer.csvdata.test;
 
 import io.slifer.csv.CsvFile;
 import io.slifer.csv.CsvLoader;
+import io.slifer.csv.CsvRow;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -213,5 +215,20 @@ public class CsvFileTest {
         List<String> expected = Arrays.asList(FOO_WTS);
         
         Assert.assertEquals(expected, csv.columnValues("a"));
+    }
+    
+    @Test
+    public void testLoopingOverRows() {
+        CsvFile csv = CsvLoader.load(TEST_FILE);
+        csv.filter(FOO);
+        
+        List<String> expected = Arrays.asList(FOO, FOO, FOO, FOO);
+        List<String> actual = new ArrayList<>();
+        
+        for (CsvRow row : csv.getRows()) {
+            actual.add(row.valueOf("a"));
+        }
+        
+        Assert.assertEquals(expected, actual);
     }
 }
