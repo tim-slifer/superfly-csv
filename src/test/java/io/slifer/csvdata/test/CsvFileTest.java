@@ -121,52 +121,52 @@ public class CsvFileTest {
         Assert.assertArrayEquals(expected, csv.currentRowValues());
     }
     
-    // @Test
-    // public void tesSetPreviousRow() {
-    //     CsvFile csv = CsvLoader.load(TEST_FILE);
-    //     csv.setCurrentRow(2);
-    //     csv.setPreviousRow();
-    //    
-    //     String[] expected = {FOO, BAZ, BAR};
-    //    
-    //     Assert.assertArrayEquals(expected, csv.currentRowValues());
-    // }
-    //
-    // @Test
-    // public void tesSetCurrentRow() {
-    //     CsvFile csv = CsvLoader.load(TEST_FILE);
-    //     csv.setCurrentRow(2);
-    //    
-    //     String[] expected = {BAR, FOO, BAZ};
-    //    
-    //     Assert.assertArrayEquals(expected, csv.currentRowValues());
-    // }
-    //
-    // @Test
-    // public void testSetNextRowInvalid() {
-    //     CsvFile csv = CsvLoader.load(TEST_FILE);
-    //     csv.setCurrentRow(8);
-    //    
-    //     exception.expect(IndexOutOfBoundsException.class);
-    //     csv.setNextRow();
-    // }
-    //
-    // @Test
-    // public void testSetPreviousRowInvalid() {
-    //     CsvFile csv = CsvLoader.load(TEST_FILE);
-    //    
-    //     exception.expect(IndexOutOfBoundsException.class);
-    //     csv.setPreviousRow();
-    // }
-    //
-    // @Test
-    // public void testSetCurrentRowInvalid() {
-    //     CsvFile csv = CsvLoader.load(TEST_FILE);
-    //    
-    //     exception.expect(IndexOutOfBoundsException.class);
-    //     csv.setCurrentRow(9);
-    // }
-    //
+    @Test
+    public void tesSetPreviousRow() {
+        CsvFile csv = CsvLoader.load(TEST_FILE);
+        csv.setCurrentRow(2);
+        csv.previousRow();
+        
+        String[] expected = {FOO, BAZ, BAR};
+        
+        Assert.assertArrayEquals(expected, csv.currentRowValues());
+    }
+    
+    @Test
+    public void tesSetCurrentRow() {
+        CsvFile csv = CsvLoader.load(TEST_FILE);
+        csv.setCurrentRow(2);
+        
+        String[] expected = {BAR, FOO, BAZ};
+        
+        Assert.assertArrayEquals(expected, csv.currentRowValues());
+    }
+    
+    @Test
+    public void testSetNextRowInvalid() {
+        CsvFile csv = CsvLoader.load(TEST_FILE);
+        csv.setCurrentRow(8);
+        
+        exception.expect(IndexOutOfBoundsException.class);
+        csv.nextRow();
+    }
+    
+    @Test
+    public void testSetPreviousRowInvalid() {
+        CsvFile csv = CsvLoader.load(TEST_FILE);
+        
+        exception.expect(IndexOutOfBoundsException.class);
+        csv.previousRow();
+    }
+    
+    @Test
+    public void testSetCurrentRowInvalid() {
+        CsvFile csv = CsvLoader.load(TEST_FILE);
+        
+        exception.expect(IndexOutOfBoundsException.class);
+        csv.setCurrentRow(9);
+    }
+    
     // @Test
     // public void testHasNextRowWithNext() {
     //     CsvFile csv = CsvLoader.load(TEST_FILE, false);
