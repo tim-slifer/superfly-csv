@@ -45,6 +45,7 @@ public class CsvFileTest {
     private static final String FOO_WTS = "foo  ";
     
     private static final String TEST_FILE = "test1.csv";
+    private static final String TEST2_FILE = "test2.csv";
     
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -57,6 +58,16 @@ public class CsvFileTest {
         List<String> expected = Arrays.asList(FOO, FOO, FOO, FOO);
         
         Assert.assertEquals(expected, csv.columnValues("a"));
+    }
+    
+    @Test
+    public void testFilterFirstColumnWithColumnsInReverseAlphabeticalOrder() {
+        CsvFile csv = CsvLoader.load(TEST2_FILE);
+        csv.filter(FOO);
+        
+        List<String> expected = Arrays.asList(FOO, FOO, FOO, FOO);
+        
+        Assert.assertEquals(expected, csv.columnValues("c"));
     }
     
     @Test
