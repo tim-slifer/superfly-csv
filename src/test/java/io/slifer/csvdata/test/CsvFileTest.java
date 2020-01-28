@@ -24,11 +24,13 @@ package io.slifer.csvdata.test;
 
 import io.slifer.csv.CsvFile;
 import io.slifer.csv.CsvLoader;
+import io.slifer.csv.CsvRow;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class CsvFileTest {
     private static final String FOO_WTS = "foo  ";
     
     private static final String TEST_FILE = "test1.csv";
+    private static final String TEST2_FILE = "test2.csv";
     
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -55,6 +58,16 @@ public class CsvFileTest {
         List<String> expected = Arrays.asList(FOO, FOO, FOO, FOO);
         
         Assert.assertEquals(expected, csv.columnValues("a"));
+    }
+    
+    @Test
+    public void testFilterFirstColumnWithColumnsInReverseAlphabeticalOrder() {
+        CsvFile csv = CsvLoader.load(TEST2_FILE);
+        csv.filter(FOO);
+        
+        List<String> expected = Arrays.asList(FOO, FOO, FOO, FOO);
+        
+        Assert.assertEquals(expected, csv.columnValues("c"));
     }
     
     @Test
@@ -114,7 +127,7 @@ public class CsvFileTest {
     @Test
     public void tesSetNextRow() {
         CsvFile csv = CsvLoader.load(TEST_FILE);
-        csv.setNextRow();
+        csv.nextRow();
         
         String[] expected = {FOO, BAZ, BAR};
         
@@ -125,7 +138,7 @@ public class CsvFileTest {
     public void tesSetPreviousRow() {
         CsvFile csv = CsvLoader.load(TEST_FILE);
         csv.setCurrentRow(2);
-        csv.setPreviousRow();
+        csv.previousRow();
         
         String[] expected = {FOO, BAZ, BAR};
         
@@ -148,7 +161,7 @@ public class CsvFileTest {
         csv.setCurrentRow(8);
         
         exception.expect(IndexOutOfBoundsException.class);
-        csv.setNextRow();
+        csv.nextRow();
     }
     
     @Test
@@ -156,7 +169,7 @@ public class CsvFileTest {
         CsvFile csv = CsvLoader.load(TEST_FILE);
         
         exception.expect(IndexOutOfBoundsException.class);
-        csv.setPreviousRow();
+        csv.previousRow();
     }
     
     @Test
@@ -165,24 +178,6 @@ public class CsvFileTest {
         
         exception.expect(IndexOutOfBoundsException.class);
         csv.setCurrentRow(9);
-    }
-    
-    @Test
-    public void testHasNextRowWithNext() {
-        CsvFile csv = CsvLoader.load(TEST_FILE, false);
-        csv.filter(FOO);
-        csv.setCurrentRow(2);
-        
-        Assert.assertTrue(csv.hasNextRow());
-    }
-    
-    @Test
-    public void testHasNextRowWithoutNext() {
-        CsvFile csv = CsvLoader.load(TEST_FILE, false);
-        csv.filter(FOO);
-        csv.setCurrentRow(3);
-        
-        Assert.assertFalse(csv.hasNextRow());
     }
     
     @Test
@@ -213,5 +208,20 @@ public class CsvFileTest {
         List<String> expected = Arrays.asList(FOO_WTS);
         
         Assert.assertEquals(expected, csv.columnValues("a"));
+    }
+    
+    @Test
+    public void testLoopingOverRows() {
+        CsvFile csv = CsvLoader.load(TEST_FILE);
+        csv.filter(FOO);
+        
+        List<String> expected = Arrays.asList(FOO, FOO, FOO, FOO);
+        List<String> actual = new ArrayList<>();
+        
+        for (CsvRow row : csv.getRows()) {
+            actual.add(row.valueOf("a"));
+        }
+        
+        Assert.assertEquals(expected, actual);
     }
 }
