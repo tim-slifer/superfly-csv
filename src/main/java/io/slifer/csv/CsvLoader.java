@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +78,7 @@ public class CsvLoader {
             
             for (int i = 1; i < csvRowData.size(); i++) {
                 if (csvRowData.get(i).length != 1) {
-                    Map<String, String> row = new HashMap<>();
+                    Map<String, String> row = new LinkedHashMap<>();
                     
                     String[] preppedRowData = (preserveSpaces) ? csvRowData.get(i) : cleanRowValues(csvRowData.get(i));
                     List<String> finalRowData = Arrays.asList(preppedRowData);
