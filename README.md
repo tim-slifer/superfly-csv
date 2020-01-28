@@ -186,7 +186,7 @@ bar,baz,foo
 baz,foo,bar
 ```
 
-... when `csv.getColumnValues("a")` is called, the values `foo`, `bar`, and `baz` will be returned as a `List<String>`.
+... when `csv.columnValues("a")` is called, the values `foo`, `bar`, and `baz` will be returned as a `List<String>`.
 
 ### List of Values by Row
 
@@ -197,7 +197,7 @@ a,b,c
 baz,bar,foo
 ```
 
-... when `csv.getCurrentRowValues()` is called, the values `baz`, `bar`, and `foo` will be returned as a `String[]`.
+... when `csv.currentRowValues()` is called, the values `baz`, `bar`, and `foo` will be returned as a `String[]`.
 
 ## Managing Instances
 
