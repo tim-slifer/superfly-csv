@@ -24,6 +24,7 @@ package io.slifer.csv;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Virtualizes a CSV file for fast and simple use in referencing and retrieving values.
@@ -183,24 +184,16 @@ public class CsvFile {
     }
     
     private void doFilter(String column, String filterBy) {
-        List<CsvRow> filteredRows = new ArrayList<>();
-        for (CsvRow row : rows) {
-            if (row.valueOf(column).equals(filterBy)) {
-                filteredRows.add(row);
-            }
-        }
-        rows = filteredRows;
+        rows = rows.stream()
+                   .filter(row -> row.valueOf(column).equals(filterBy))
+                   .collect(Collectors.toList());
         currentRowIndex = 0;
     }
     
     private void doExclude(String column, String excludeBy) {
-        List<CsvRow> excludedRows = new ArrayList<>();
-        for (CsvRow row : rows) {
-            if (!row.valueOf(column).equals(excludeBy)) {
-                excludedRows.add(row);
-            }
-        }
-        rows = excludedRows;
+        rows = rows.stream()
+                   .filter(row -> !row.valueOf(column).equals(excludeBy))
+                   .collect(Collectors.toList());
         currentRowIndex = 0;
     }
 }
