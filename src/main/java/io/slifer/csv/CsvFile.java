@@ -50,7 +50,7 @@ public class CsvFile {
      * @return A self reference with the reduced data set.
      */
     public CsvFile filter(String filterBy) {
-        doFilter(currentRow.firstKey(), filterBy);
+        doFilter(currentRow.firstColumnName(), filterBy);
         
         return this;
     }
@@ -77,7 +77,7 @@ public class CsvFile {
      * @return A self reference with the reduced data set.
      */
     public CsvFile exclude(String excludeBy) {
-        doExclude(currentRow.firstKey(), excludeBy);
+        doExclude(currentRow.firstColumnName(), excludeBy);
         
         return this;
     }
@@ -101,7 +101,7 @@ public class CsvFile {
      *
      * @param column The name of the column.
      *
-     * @return The value of the CSV segment.
+     * @return The value in the given column.
      */
     public String valueOf(String column) {
         return currentRow.valueOf(column);
@@ -126,7 +126,7 @@ public class CsvFile {
     /**
      * Retrieves all values from the current row.
      *
-     * @return An array of values from the current row.
+     * @return An array.
      */
     public String[] currentRowValues() {
         return currentRow.values();
@@ -136,7 +136,7 @@ public class CsvFile {
      * Creates a clone of the current instance of the object, allowing "save points" between filter/exclude operations,
      * or multiple filter/exclude paths for a single file.
      *
-     * @return A new instance of CsvFile, with the current Header and Row data.
+     * @return A new instance of CsvFile, with the current Row data.
      */
     public CsvFile clone() {
         return new CsvFile(rows);
@@ -146,8 +146,6 @@ public class CsvFile {
      * Changes focus to a specific row.
      *
      * @param row The new row to receive focus.
-     *
-     * @return A self reference.
      */
     public void setCurrentRow(int row) {
         this.currentRowIndex = row;
@@ -156,8 +154,6 @@ public class CsvFile {
     
     /**
      * Updates focus to the next row beneath the current row.
-     *
-     * @return A self reference.
      */
     public void nextRow() {
         currentRowIndex++;
@@ -166,18 +162,22 @@ public class CsvFile {
     
     /**
      * Updates focus to the previous row above the current row.
-     *
-     * @return A self reference.
      */
     public void previousRow() {
         currentRowIndex--;
         currentRow = rows.get(currentRowIndex);
     }
     
+    /**
+     * @return The number of CSV rows currently stored.
+     */
     public int length() {
         return rows.size();
     }
     
+    /**
+     * @return The list of currently stored CSV rows.
+     */
     public List<CsvRow> getRows() {
         return rows;
     }
