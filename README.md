@@ -154,10 +154,10 @@ Finally, a convenience method exists to automatically set the exclusion target t
 By default, focus is given to the first row of the CSV data when a CSV file is loaded.  Filtering and excluding rows 
 will also reset focus to the first row.  Focus is reassigned by one of several methods.
 
-The `setNextRow()` method will advance focus to the next row below the current row, if one exists.  If no next row 
+The `nextRow()` method will advance focus to the next row below the current row, if one exists.  If no next row 
 exists, an exception is thrown.
 
-The `setPreviousRow()` method will change focus to the row above the current row, if one exists.  If no previous row 
+The `previousRow()` method will change focus to the row above the current row, if one exists.  If no previous row 
 exists, an exception is thrown.
 
 The `setCurrentRow(Int row)` method will change focus directly to the given row.  A constraint check is performed to 
@@ -186,7 +186,7 @@ bar,baz,foo
 baz,foo,bar
 ```
 
-... when `csv.getColumnValues("a")` is called, the values `foo`, `bar`, and `baz` will be returned as a `List<String>`.
+... when `csv.columnValues("a")` is called, the values `foo`, `bar`, and `baz` will be returned as a `List<String>`.
 
 ### List of Values by Row
 
@@ -197,7 +197,7 @@ a,b,c
 baz,bar,foo
 ```
 
-... when `csv.getCurrentRowValues()` is called, the values `baz`, `bar`, and `foo` will be returned as a `String[]`.
+... when `csv.currentRowValues()` is called, the values `baz`, `bar`, and `foo` will be returned as a `String[]`.
 
 ## Managing Instances
 
@@ -205,3 +205,19 @@ Multiple instances of a `CsvFile` can be created by using the `.clone()` method.
 state of a CSV file to be replicated to a separate instance of the object.  Cloning a `CsvFile` instance will 
 enable more sophisticated data filtering and exclusion, as well as creating a "save point" of sorts with a 
 virtualized CSV file.
+
+## Iterating over CSV rows
+
+The recommended approach to iterating over rows on a CSV is to create an enhanced `for` loop on `getRows
+()`, then performing any desired functions or calls to the `CsvRow` object.
+
+```java
+for (CsvRow row : csv.getRows()) {
+    // add tasks to be completed for each currently stored row.
+}
+```
+
+The `CsvFile` is not an iterator, and does not behave as such. Thus, `while` loops that conclude with calls to
+`nextRow()` will result in the final row being skipped, or in the case of single-row CSV, the loop exiting without
+running any of the iterative commands. The `getRows()` method does return an `ArrayList`, which in turn makes an
+`Iterator` available, if one is required.

@@ -24,6 +24,7 @@ package io.slifer.csv;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Virtualizes a CSV file for fast and simple use in referencing and retrieving values.
@@ -32,16 +33,14 @@ import java.util.List;
  */
 public class CsvFile {
     
-    private String[] header;
-    private List<String[]> rows;
+    private List<CsvRow> rows;
+    private int currentRowIndex;
+    private CsvRow currentRow;
     
-    private int currentRow;
-    
-    public CsvFile(String[] header, List<String[]> rows) {
-        this.header = header;
+    public CsvFile(List<CsvRow> rows) {
         this.rows = rows;
-        
-        currentRow = 0;
+        this.currentRowIndex = 0;
+        this.currentRow = this.rows.get(0);
     }
     
     /**
@@ -52,7 +51,7 @@ public class CsvFile {
      * @return A self reference with the reduced data set.
      */
     public CsvFile filter(String filterBy) {
-        doFilter(0, filterBy);
+        doFilter(currentRow.firstColumnName(), filterBy);
         
         return this;
     }
@@ -66,8 +65,7 @@ public class CsvFile {
      * @return A self reference with the reduced data set.
      */
     public CsvFile filter(String column, String filterBy) {
-        int index = getColumnIndex(column);
-        doFilter(index, filterBy);
+        doFilter(column, filterBy);
         
         return this;
     }
@@ -80,7 +78,7 @@ public class CsvFile {
      * @return A self reference with the reduced data set.
      */
     public CsvFile exclude(String excludeBy) {
-        doExclude(0, excludeBy);
+        doExclude(currentRow.firstColumnName(), excludeBy);
         
         return this;
     }
@@ -94,8 +92,7 @@ public class CsvFile {
      * @return A self reference with the reduced data set.
      */
     public CsvFile exclude(String column, String excludeBy) {
-        int index = getColumnIndex(column);
-        doExclude(index, excludeBy);
+        doExclude(column, excludeBy);
         
         return this;
     }
@@ -105,13 +102,10 @@ public class CsvFile {
      *
      * @param column The name of the column.
      *
-     * @return The value of the CSV segment.
+     * @return The value in the given column.
      */
     public String valueOf(String column) {
-        int index = getColumnIndex(column);
-        String[] row = rows.get(currentRow);
-        
-        return row[index];
+        return currentRow.valueOf(column);
     }
     
     /**
@@ -122,10 +116,9 @@ public class CsvFile {
      * @return A list of CSV values from the specified column.
      */
     public List<String> columnValues(String column) {
-        int index = getColumnIndex(column);
         List<String> columnValues = new ArrayList<>();
-        for (String[] row : rows) {
-            columnValues.add(row[index]);
+        for (CsvRow row : rows) {
+            columnValues.add(row.valueOf(column));
         }
         
         return columnValues;
@@ -134,106 +127,73 @@ public class CsvFile {
     /**
      * Retrieves all values from the current row.
      *
-     * @return An array of values from the current row.
+     * @return An array.
      */
     public String[] currentRowValues() {
-        return rows.get(currentRow);
+        return currentRow.values();
     }
     
     /**
      * Creates a clone of the current instance of the object, allowing "save points" between filter/exclude operations,
      * or multiple filter/exclude paths for a single file.
      *
-     * @return A new instance of CsvFile, with the current Header and Row data.
+     * @return A new instance of CsvFile, with the current Row data.
      */
     public CsvFile clone() {
-        return new CsvFile(header, rows);
+        return new CsvFile(rows);
     }
     
     /**
      * Changes focus to a specific row.
      *
      * @param row The new row to receive focus.
-     *
-     * @return A self reference.
      */
-    public CsvFile setCurrentRow(int row) {
-        checkRowBoundaries(row);
-        this.currentRow = row;
-        
-        return this;
+    public void setCurrentRow(int row) {
+        this.currentRowIndex = row;
+        currentRow = rows.get(currentRowIndex);
     }
     
     /**
      * Updates focus to the next row beneath the current row.
-     *
-     * @return A self reference.
      */
-    public CsvFile setNextRow() {
-        checkRowBoundaries(currentRow + 1);
-        currentRow++;
-        
-        return this;
+    public void nextRow() {
+        currentRowIndex++;
+        currentRow = rows.get(currentRowIndex);
     }
     
     /**
      * Updates focus to the previous row above the current row.
-     *
-     * @return A self reference.
      */
-    public CsvFile setPreviousRow() {
-        checkRowBoundaries(currentRow - 1);
-        currentRow--;
-        
-        return this;
+    public void previousRow() {
+        currentRowIndex--;
+        currentRow = rows.get(currentRowIndex);
     }
     
     /**
-     * Indicates whether or not another row exists below the current row.
-     *
-     * @return True if a row exists, false otherwise.
+     * @return The number of CSV rows currently stored.
      */
-    public boolean hasNextRow() {
-        return (currentRow < rows.size() - 1);
+    public int length() {
+        return rows.size();
     }
     
-    private void doFilter(int index, String filterBy) {
-        List<String[]> filteredRows = new ArrayList<>();
-        for (String[] row : rows) {
-            if (row[index].equals(filterBy)) {
-                filteredRows.add(row);
-            }
-        }
-        rows = filteredRows;
-        currentRow = 0;
+    /**
+     * @return The list of currently stored CSV rows.
+     */
+    public List<CsvRow> getRows() {
+        return rows;
     }
     
-    private void doExclude(int index, String excludeBy) {
-        List<String[]> excludedRows = new ArrayList<>();
-        for (String[] row : rows) {
-            if (!row[index].equals(excludeBy)) {
-                excludedRows.add(row);
-            }
-            rows = excludedRows;
-            currentRow = 0;
-        }
+    private void doFilter(String column, String filterBy) {
+        rows = rows.stream()
+                   .filter(row -> row.valueOf(column).equals(filterBy))
+                   .collect(Collectors.toList());
+        currentRowIndex = 0;
     }
     
-    private void checkRowBoundaries(int row) {
-        if (row > (rows.size() - 1)) {
-            throw new IndexOutOfBoundsException("New row index [" + row + "] exceeds the bounds of the CSV file.");
-        }
-        if ((row - 1) < 0) {
-            throw new IndexOutOfBoundsException("New index cannot be less than zero.");
-        }
-    }
-    
-    private int getColumnIndex(String column) {
-        for (int i = 0; i < header.length; i++) {
-            if (header[i].equalsIgnoreCase(column)) {
-                return i;
-            }
-        }
-        throw new IllegalArgumentException("The column [" + column + "] does not exist.");
+    private void doExclude(String column, String excludeBy) {
+        rows = rows.stream()
+                   .filter(row -> !row.valueOf(column).equals(excludeBy))
+                   .collect(Collectors.toList());
+        currentRowIndex = 0;
     }
 }
