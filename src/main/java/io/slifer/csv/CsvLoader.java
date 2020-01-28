@@ -27,7 +27,10 @@ import com.opencsv.CSVReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The CsvLoader performs the sole task of reading a CSV file from the classpath and loading a CsvFile instance that
@@ -63,19 +66,27 @@ public class CsvLoader {
     }
     
     private static CsvFile importCsvData(String fileName, boolean preserveSpaces) {
-        String[] header;
-        List<String[]> rows = new ArrayList<>();
+        List<String> header;
+        List<CsvRow> rows = new ArrayList<>();
         
         try {
             InputStream inputStream = CsvFile.class.getClassLoader().getResourceAsStream(fileName);
             CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));
-            List<String[]> csv = csvReader.readAll();
+            List<String[]> csvRowData = csvReader.readAll();
             
-            header = cleanRowValues(csv.get(0));
-            for (int i = 1; i < csv.size(); i++) {
-                if (csv.get(i).length != 1) {
-                    String[] row = (preserveSpaces) ? csv.get(i) : cleanRowValues(csv.get(i));
-                    rows.add(row);
+            header = Arrays.asList(cleanRowValues(csvRowData.get(0)));
+            
+            for (int i = 1; i < csvRowData.size(); i++) {
+                if (csvRowData.get(i).length != 1) {
+                    Map<String, String> row = new LinkedHashMap<>();
+                    
+                    String[] preppedRowData = (preserveSpaces) ? csvRowData.get(i) : cleanRowValues(csvRowData.get(i));
+                    List<String> finalRowData = Arrays.asList(preppedRowData);
+                    for (int j = 0; j < header.size(); j++) {
+                        row.put(header.get(j), finalRowData.get(j));
+                    }
+                    
+                    rows.add(new CsvRow(row));
                 }
             }
             csvReader.close();
@@ -84,7 +95,7 @@ public class CsvLoader {
             throw new IllegalArgumentException("Error while loading file [" + fileName + "].");
         }
         
-        return new CsvFile(header, rows);
+        return new CsvFile(rows);
     }
     
     private static String[] cleanRowValues(String[] row) {
