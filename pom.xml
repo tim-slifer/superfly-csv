@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>io.slifer</groupId>
+    <groupId>dev.slifer</groupId>
     <artifactId>superfly-csv</artifactId>
     <version>2.0.0</version>
     <packaging>jar</packaging>
@@ -22,9 +22,9 @@
     <developers>
         <developer>
             <name>Tim Slifer</name>
-            <email>oss@slifer.io</email>
-            <organization>slifer.io</organization>
-            <organizationUrl>http://www.slifer.io</organizationUrl>
+            <roles>
+                <role>Project Owner</role>
+            </roles>
         </developer>
     </developers>
     
