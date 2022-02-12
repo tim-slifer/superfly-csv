@@ -20,11 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
  */
-package io.slifer.csvdata.test;
+package dev.slifer.csv.test;
 
-import io.slifer.csv.CsvFile;
-import io.slifer.csv.CsvLoader;
-import io.slifer.csv.CsvRow;
+import dev.slifer.csv.CsvFile;
+import dev.slifer.csv.CsvLoader;
+import dev.slifer.csv.CsvRow;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

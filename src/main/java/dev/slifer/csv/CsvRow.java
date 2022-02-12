@@ -1,4 +1,4 @@
-package io.slifer.csv;
+package dev.slifer.csv;
 
 import java.util.Map;
 
