@@ -37,8 +37,8 @@
     <properties>
         <java.version>11</java.version>
         
-        <opencsv.version>4.6</opencsv.version>
-        <junit.version>4.12</junit.version>
+        <opencsv.version>5.5.2</opencsv.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
     
     <dependencies>
