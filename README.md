@@ -14,7 +14,7 @@ On the `pom.xml`, add a new entry to the `<dependencies>` section:
 <dependency>
     <groupId>dev.slifer</groupId>
     <artifactId>superfly-csv</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 </dependency>
 ```
 
