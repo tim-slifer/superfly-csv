@@ -6,6 +6,18 @@ impossible to work with effectively in a source control system such as Git.  CSV
 ability to organize data in a meaningful way, while not suffering the same challenges with source control and 
 collaboration as Excel.  
 
+## Getting started
+
+On the `pom.xml`, add a new entry to the `<dependencies>` section:
+
+```xml
+<dependency>
+    <groupId>dev.slifer</groupId>
+    <artifactId>superfly-csv</artifactId>
+    <version>3.0.1</version>
+</dependency>
+```
+
 # Usage
 
 ## Loading CSV Files
